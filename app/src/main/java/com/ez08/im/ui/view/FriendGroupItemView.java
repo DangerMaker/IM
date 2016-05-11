@@ -1,12 +1,17 @@
 package com.ez08.im.ui.view;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,10 +20,12 @@ import com.ez08.im.R;
 import com.ez08.im.model.FriendGroupItemModel;
 import com.ez08.im.ui.ArticleDetailActivity;
 import com.ez08.im.ui.MyMainActivity;
+import com.ez08.im.ui.PhotoActivity1;
 import com.ez08.im.util.DeviceUtils;
 import com.ez08.im.util.SystemUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.Bind;
@@ -31,6 +38,7 @@ import butterknife.OnClick;
  */
 public class FriendGroupItemView extends RelativeLayout implements View.OnClickListener {
 
+    private static final int FRIEND_PIC = 1;
     @Bind(R.id.image)
     SimpleDraweeView avater;
     @Bind(R.id.name)
@@ -78,7 +86,11 @@ public class FriendGroupItemView extends RelativeLayout implements View.OnClickL
     TextView comment;
     @Bind(R.id.linearComment)
     LinearLayout linearComment;
+    @Bind(R.id.circle)
+    RelativeLayout circle;
 
+
+    private String[] dialogString = {"拉黑","举报","特别关注","帮上头条","屏蔽","收藏"};
 
     public FriendGroupItemView(Context context) {
         super(context);
@@ -93,7 +105,7 @@ public class FriendGroupItemView extends RelativeLayout implements View.OnClickL
         margin = SystemUtils.convertDpToPixel(getContext(), 4);
     }
 
-    public void setData(FriendGroupItemModel data) {
+    public void setData(final FriendGroupItemModel data) {
         this.data = data;
         avater.setImageURI(Uri.parse(data.getEzContentData().getUserHeaderImageName()));
         name.setText(data.getEzContentData().getUserNameText());
@@ -115,7 +127,7 @@ public class FriendGroupItemView extends RelativeLayout implements View.OnClickL
         gridLayout.removeAllViews();
         for(int i = 0 ; i < data.getEzContentData().getImageArray().size() ; i ++){
             String imageUrl = data.getEzContentData().getImageArray().get(i);
-            View convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_drawee, gridLayout, false);
+            final View convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_drawee, gridLayout, false);
             convertView.setTag(i);
             GridLayout.LayoutParams lp = (GridLayout.LayoutParams) convertView.getLayoutParams();
             lp.width = (viewWidth - 2 * margin) / 3;
@@ -123,7 +135,18 @@ public class FriendGroupItemView extends RelativeLayout implements View.OnClickL
             lp.setMargins(margin / 2, margin / 2, margin / 2, margin / 2);
             gridLayout.addView(convertView);
             ((SimpleDraweeView) convertView).setImageURI(Uri.parse(imageUrl));
+            convertView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), PhotoActivity1.class);
+                    intent.putExtra("images",(Serializable)data.getEzContentData().getImageArray());
+                    intent.putExtra("ID",(int)convertView.getTag());
+                    intent.putExtra("type",FRIEND_PIC);
+                    getContext().startActivity(intent);
+                }
+            });
         }
+
 
 
 
@@ -167,6 +190,9 @@ public class FriendGroupItemView extends RelativeLayout implements View.OnClickL
         }else {
             linearComment.setVisibility(GONE);
         }
+
+
+
     }
 
     @Override
@@ -211,6 +237,22 @@ public class FriendGroupItemView extends RelativeLayout implements View.OnClickL
         zan.setText(zanNumber+"");
     }
 
+    @OnClick(R.id.more)
+    public void more(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        ListView listView = new ListView(context);
+        listView.setBackgroundColor(Color.WHITE);
+        listView.setAdapter(new ArrayAdapter<>(context,android.R.layout.simple_list_item_1,dialogString));
+        final AlertDialog dialog = builder.setView(listView).show();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                dialog.dismiss();
+                SystemUtils.show_msg(context,dialogString[position]);
+            }
+        });
+    }
+
     @OnClick(R.id.image)
     public void toMy() {
         context.startActivity(new Intent(context, MyMainActivity.class));
@@ -226,4 +268,12 @@ public class FriendGroupItemView extends RelativeLayout implements View.OnClickL
         intent.putExtra("data", data);
         context.startActivity(intent);
     }
+
+    @OnClick(R.id.send_comment)
+    public void sendComment(){
+        CommentPopupWindow popupWindow = new CommentPopupWindow(context,circle);
+
+    }
+
+
 }

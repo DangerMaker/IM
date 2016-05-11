@@ -1,5 +1,8 @@
 package com.ez08.im.ui;
 
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +13,11 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cpoopc.scrollablelayoutlib.ScrollableHelper;
@@ -24,10 +31,13 @@ import com.ez08.im.util.DeviceUtils;
 import com.ez08.im.util.SystemUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * User: lyjq(1752095474)
@@ -56,18 +66,23 @@ public class ArticleDetailActivity extends BackBaseActivity {
     GridLayout gridLayout;
     @Bind(R.id.shrink)
     TextView shrink;
+    @Bind(R.id.send_comment)
+    LinearLayout linearLayout;
 
     FriendGroupItemModel data;
     String allcontent;
     int viewWidth;
     int margin;
     ArrayList<BaseFragment> fragmentList = new ArrayList<>();
+    private String[] dialogString = {"举报","帮上头条","收藏","分享"};
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_detail1);
+        ButterKnife.bind(this);
         setCustomTitle("微博正文");
-        data = (FriendGroupItemModel)getIntent().getParcelableExtra("data");
+        data = getIntent().getParcelableExtra("data");
         List<FriendGroupItemModel.EzContentDataBean.CommentArrayBean> list = data.getEzContentData().getCommentArray();
         Tab2Fragment fragment = new Tab2Fragment();
         fragment.initDatas(list);
@@ -108,7 +123,7 @@ public class ArticleDetailActivity extends BackBaseActivity {
 
         viewWidth = DeviceUtils.getScreenWidth(this) - SystemUtils.convertDpToPixel(this, 68);
         margin = SystemUtils.convertDpToPixel(this, 4);
-
+        linearLayout.setVisibility(View.GONE);
         setData();
     }
 
@@ -122,20 +137,32 @@ public class ArticleDetailActivity extends BackBaseActivity {
         content.setText(allcontent);
 
         gridLayout.removeAllViews();
-        for (String imageUrl : data.getEzContentData().getImageArray()) {
-            View convertView = LayoutInflater.from(this).inflate(R.layout.item_drawee, gridLayout, false);
+        for(int i = 0 ; i < data.getEzContentData().getImageArray().size() ; i ++){
+            String imageUrl = data.getEzContentData().getImageArray().get(i);
+            final View convertView = LayoutInflater.from(this).inflate(R.layout.item_drawee, gridLayout, false);
             GridLayout.LayoutParams lp = (GridLayout.LayoutParams) convertView.getLayoutParams();
+            convertView.setTag(i);
             lp.width = (viewWidth - 2 * margin) / 3;
             lp.height = (viewWidth - 2 * margin) / 3;
             lp.setMargins(margin / 2, margin / 2, margin / 2, margin / 2);
             gridLayout.addView(convertView);
             ((SimpleDraweeView) convertView).setImageURI(Uri.parse(imageUrl));
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ArticleDetailActivity.this, PhotoActivity1.class);
+                    intent.putExtra("images",(Serializable)data.getEzContentData().getImageArray());
+                    intent.putExtra("ID",(int)convertView.getTag());
+                    intent.putExtra("type",1);
+                    startActivity(intent);
+                }
+            });
         }
     }
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        private String[] title = {"评论","点赞"};
+        private String[] title = {"评论", "点赞"};
 
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -160,5 +187,21 @@ public class ArticleDetailActivity extends BackBaseActivity {
         public int getItemPosition(Object object) {
             return POSITION_NONE;
         }
+    }
+
+    @OnClick(R.id.more)
+    public void more(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        ListView listView = new ListView(this);
+        listView.setBackgroundColor(Color.WHITE);
+        listView.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,dialogString));
+        final AlertDialog dialog = builder.setView(listView).show();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                dialog.dismiss();
+                SystemUtils.show_msg(ArticleDetailActivity.this,dialogString[position]);
+            }
+        });
     }
 }

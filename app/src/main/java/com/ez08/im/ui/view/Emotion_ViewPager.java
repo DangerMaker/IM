@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Emotion_ViewPager extends ViewPager {
 
-	private List<Emotion_GridView2> views = new ArrayList<Emotion_GridView2>();
+	private List<Emotion_GridView2> views = new ArrayList<>();
 	private Context context;
 
 	public Emotion_ViewPager(Context context, AttributeSet attrs) {

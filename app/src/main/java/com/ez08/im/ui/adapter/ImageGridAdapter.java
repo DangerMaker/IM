@@ -113,6 +113,7 @@ public class ImageGridAdapter extends BaseAdapter {
 		holder.iv.setTag(item.imagePath);
 		cache.displayBmp(holder.iv, item.thumbnailPath, item.imagePath,
 				callback);
+
 		holder.selected.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -162,6 +163,7 @@ public class ImageGridAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(act, PhotoActivity1.class);
+				intent.putExtra("type",2);
 				intent.putExtra("images",(Serializable) dataList);
 				intent.putExtra("ID",position);
 				act.startActivity(intent);

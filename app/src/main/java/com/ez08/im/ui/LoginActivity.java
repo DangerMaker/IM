@@ -114,7 +114,7 @@ public class LoginActivity extends BackBaseActivity {
 
         Config.uid = user.getUid();
         Config.cookie = headers;
-        Config.username = user.getName();
+        Config.user = user;
         finish();
     }
 }

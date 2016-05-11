@@ -1,6 +1,7 @@
 package com.ez08.im.ui;
 
 import android.app.AlertDialog;
+import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -11,13 +12,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cpoopc.scrollablelayoutlib.ScrollableHelper;
@@ -27,6 +31,7 @@ import com.ez08.im.model.FriendGroupItemModel;
 import com.ez08.im.ui.fragment.BaseFragment;
 import com.ez08.im.ui.fragment.Tab2Fragment;
 import com.ez08.im.ui.fragment.Tab3Fragment;
+import com.ez08.im.ui.view.CommentPopupWindow;
 import com.ez08.im.util.DeviceUtils;
 import com.ez08.im.util.SystemUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -68,6 +73,10 @@ public class ArticleDetailActivity extends BackBaseActivity {
     TextView shrink;
     @Bind(R.id.send_comment)
     LinearLayout linearLayout;
+    @Bind(R.id.detail)
+    RelativeLayout detail;
+    @Bind(R.id.send_comment1)
+    RelativeLayout sendComment;
 
     FriendGroupItemModel data;
     String allcontent;
@@ -89,7 +98,7 @@ public class ArticleDetailActivity extends BackBaseActivity {
         fragmentList.add(fragment);
         Tab3Fragment fragment1 = new Tab3Fragment();
         fragmentList.add(fragment1);
-
+        sendComment.setVisibility(View.GONE);
         mScrollLayout = (ScrollableLayout) findViewById(R.id.scrollableLayout);
         mScrollLayout.setOnScrollListener(new ScrollableLayout.OnScrollListener() {
             @Override
@@ -203,5 +212,22 @@ public class ArticleDetailActivity extends BackBaseActivity {
                 SystemUtils.show_msg(ArticleDetailActivity.this,dialogString[position]);
             }
         });
+    }
+
+    @OnClick(R.id.send_comment1)
+    public void sendComment(){
+        CommentPopupWindow popupWindow = new CommentPopupWindow(this,detail);
+        popupInputMethodWindow();
+    }
+
+    //当popup显示的时候,自动弹出软键盘
+    private void popupInputMethodWindow() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Service.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }).start();
     }
 }

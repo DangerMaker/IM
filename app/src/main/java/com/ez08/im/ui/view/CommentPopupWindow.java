@@ -38,14 +38,16 @@ public class CommentPopupWindow extends PopupWindow implements View.OnClickListe
         setWidth(LinearLayout.LayoutParams.FILL_PARENT);
         setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         setBackgroundDrawable(new BitmapDrawable());
+        //设置能否获取焦点
         setFocusable(true);
+        //设置点击外部区域能否关闭popup
         setOutsideTouchable(true);
         setContentView(view);
         //设置软键盘不会挡住popupwindown
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        //设置展示位置
         showAtLocation(parent, Gravity.BOTTOM, 0, 0);
         update();
-
 
         ImageView addFriend = (ImageView) view.findViewById(R.id.add_friend);
         ImageView addEmoj = (ImageView) view.findViewById(R.id.add_emoj);
@@ -119,6 +121,7 @@ public class CommentPopupWindow extends PopupWindow implements View.OnClickListe
                 break;
         }
     }
+
     //强制隐藏键盘
     public void hideInput() {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);

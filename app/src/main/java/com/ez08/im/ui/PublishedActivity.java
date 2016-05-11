@@ -2,6 +2,7 @@ package com.ez08.im.ui;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -127,7 +128,6 @@ public class PublishedActivity extends BackBaseActivity implements View.OnClickL
         //计算图片排列总宽度
         mPicWidth = screenWidth - rightMargin - leftMargin;
         controlKeyboardLayout(root, mAddGroup);
-
         //发送按钮显示状态
         mComment.addTextChangedListener(new TextWatcher() {
             @Override
@@ -171,6 +171,10 @@ public class PublishedActivity extends BackBaseActivity implements View.OnClickL
                 }
             }
         });
+
+        mComment.setFocusable(true);
+        InputMethodManager imm = (InputMethodManager)getSystemService(Service.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 
@@ -180,6 +184,7 @@ public class PublishedActivity extends BackBaseActivity implements View.OnClickL
         if (Config.user != null) mUserName.setText(Config.user.getName());
     }
 
+    //打开相机
     private void fromCamera() {
         String sdStatus = Environment.getExternalStorageState();
         if (!TextUtils.equals(sdStatus, Environment.MEDIA_MOUNTED)) {
@@ -192,7 +197,7 @@ public class PublishedActivity extends BackBaseActivity implements View.OnClickL
         openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         startActivityForResult(openCameraIntent, TAKE_PICTURE);
     }
-
+    //打开图库
     private void fromPicture() {
         Intent intent = new Intent(this,
                 ImageGridActivity.class);

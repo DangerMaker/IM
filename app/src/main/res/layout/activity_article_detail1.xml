@@ -1,8 +1,16 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/detail"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+    </LinearLayout>
 
      <include layout="@layout/toolbar_back" />
 
@@ -40,9 +48,32 @@
             android:layout_height="match_parent" />
 
     </com.cpoopc.scrollablelayoutlib.ScrollableLayout>
-    <EditText
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="发表评论"
-        />
-</LinearLayout>
+        android:background="@color/colorLightGray"
+        android:id="@+id/send_comment1"
+        android:paddingTop="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_height="50dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/send_comment_"
+            android:background="@color/colorWhite"
+            android:layout_alignParentLeft="true"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/selector_send_comment"
+            android:background="@color/colorWhite"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+</RelativeLayout>

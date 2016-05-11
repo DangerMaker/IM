@@ -1,12 +1,14 @@
 package com.ez08.im.ui.view;
 
 import android.app.AlertDialog;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
@@ -272,8 +274,17 @@ public class FriendGroupItemView extends RelativeLayout implements View.OnClickL
     @OnClick(R.id.send_comment)
     public void sendComment(){
         CommentPopupWindow popupWindow = new CommentPopupWindow(context,circle);
-
+        popupInputMethodWindow();
     }
 
-
+    //当popup显示的时候,自动弹出软键盘
+    private void popupInputMethodWindow() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Service.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }).start();
+    }
 }

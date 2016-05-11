@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 
 import com.ez08.im.R;
+import com.ez08.im.util.EditTextUtils;
 import com.ez08.im.util.FileUtils;
 
 import java.util.ArrayList;
@@ -26,15 +27,7 @@ import java.util.List;
 public class Emotion_GridView2 extends GridView {
 	Context context;
 	EditText et;
-	List<HashMap<String, Integer>> emothion_items = new ArrayList<HashMap<String, Integer>>();
-
-	/*
-	 * public static final String[] EMOS = new String[] { "微笑", "呲牙", "色", "发呆",
-	 * "得意", "大哭", "害羞", "闭嘴", "睡", "流泪", "尴尬", "发怒", "调皮", "大笑", "惊讶", "委屈",
-	 * "冷汗", "抓狂", "吐", "偷笑", "傲慢", "困", "憨笑", "敲打", "抠鼻", "鼓掌", "坏笑", "鄙视",
-	 * "委屈", "阴险", "咖啡", "玫瑰", "嘴唇", "爱心", "菜刀", "月亮", "强", "握手", "拥护", "啤酒",
-	 * "OK" };
-	 */
+	List<HashMap<String, Integer>> emothion_items = new ArrayList<>();
 
 	public Emotion_GridView2(Context context) {
 		super(context);
@@ -47,7 +40,7 @@ public class Emotion_GridView2 extends GridView {
 	}
 
 	public void setEditText(EditText mInputTextView) {
-		this.et = (EditText) mInputTextView;
+		this.et = mInputTextView;
 	}
 
 	private int startId;
@@ -85,22 +78,20 @@ public class Emotion_GridView2 extends GridView {
 			if (startId + i > R.drawable.emoji_01 + 40) {
 				continue;
 			}
-			HashMap<String, Integer> map = new HashMap<String, Integer>();
+			HashMap<String, Integer> map = new HashMap<>();
 
 			map.put("emotion", startId + i);
 			emothion_items.add(map);
 
-			FileUtils.emo_map.put(
-					"[" + FileUtils.EMOS[i + mPageIndex * EMO_COUNT_PER_PAGE]
-							+ "]", startId + i);
+			EditTextUtils.emo_map.put("[" + EditTextUtils.EMOS[i + mPageIndex * EMO_COUNT_PER_PAGE]	+ "]", startId + i);
+
 		}
 
 		MyGridViewAdapter mgva = new MyGridViewAdapter(emothion_items);
 		this.setAdapter(mgva);
 		this.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-									int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
 
 				int emo_id;
 				if (position == EMO_COUNT_PER_PAGE) {
@@ -150,7 +141,6 @@ public class Emotion_GridView2 extends GridView {
 
 				if (last1 - last2 == 3 || last1 - last2 == 2) {
 					// 删除代表表情的字符串
-					// TODO last2 -1 表示将添加表情时的空格一起删除
 					newtextString = str.substring(0, last2 -1);
 				} else {// 不是表情，删除最后一个字
 					newtextString = str.substring(0, length - 1);
@@ -161,10 +151,10 @@ public class Emotion_GridView2 extends GridView {
 
 		} else {
 			newtextString = et.getText().toString() + "["
-					+ FileUtils.EMOS[index] + "]";
+					+ EditTextUtils.EMOS[index] + "]";
 		}
 
-		SpannableStringBuilder ssb = FileUtils.getEmotion(context,
+		SpannableStringBuilder ssb = EditTextUtils.getEmotion(context,
 				newtextString);
 		et.setText(ssb);
 		et.setSelection(ssb.length());

@@ -98,7 +98,6 @@ public class ArticleDetailActivity extends BackBaseActivity {
         fragmentList.add(fragment);
         Tab3Fragment fragment1 = new Tab3Fragment();
         fragmentList.add(fragment1);
-        sendComment.setVisibility(View.GONE);
         mScrollLayout = (ScrollableLayout) findViewById(R.id.scrollableLayout);
         mScrollLayout.setOnScrollListener(new ScrollableLayout.OnScrollListener() {
             @Override
@@ -114,6 +113,7 @@ public class ArticleDetailActivity extends BackBaseActivity {
         viewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

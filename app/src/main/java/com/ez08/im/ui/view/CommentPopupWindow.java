@@ -113,7 +113,7 @@ public class CommentPopupWindow extends PopupWindow implements View.OnClickListe
 
 
             case R.id.send:
-
+                this.dismiss();
                 break;
 
             case R.id.comment:

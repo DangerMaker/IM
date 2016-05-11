@@ -21,7 +21,6 @@ public class Emotion_ViewPager extends ViewPager {
 
 	public Emotion_ViewPager(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
 		this.context = context;
 	}
 
@@ -32,7 +31,6 @@ public class Emotion_ViewPager extends ViewPager {
 
 	@Override
 	protected void onAttachedToWindow() {
-		// TODO Auto-generated method stub
 		if (isInEditMode()) {
 			return;
 		}

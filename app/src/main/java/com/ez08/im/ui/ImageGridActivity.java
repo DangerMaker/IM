@@ -42,7 +42,12 @@ public class ImageGridActivity extends BackBaseActivity implements OnClickListen
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    Toast.makeText(ImageGridActivity.this, "最多选择9张图片", Toast.LENGTH_SHORT).show();
+                    if(type == 1){
+                        Toast.makeText(ImageGridActivity.this, "最多选择9张图片", Toast.LENGTH_SHORT).show();
+                    }else if(type == 2){
+                        Toast.makeText(ImageGridActivity.this, "最多选择3张图片", Toast.LENGTH_SHORT).show();
+                    }
+
                     break;
             }
         }
@@ -51,12 +56,14 @@ public class ImageGridActivity extends BackBaseActivity implements OnClickListen
     GridView mGridview;
     @Bind(R.id.btn_finish)
     Button mFinish;
+    private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_grid);
         setCustomTitle("相册胶卷");
+        type = getIntent().getIntExtra("type",0);
         helper = AlbumHelper.getHelper();
         helper.init(getApplicationContext());
         initData();

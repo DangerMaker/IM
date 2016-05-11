@@ -32,7 +32,6 @@ public class ModleActivity extends BackBaseActivity implements RadioGroup.OnChec
         setContentView(R.layout.activity_modle);
         ButterKnife.bind(this);
         setCustomTitle("选择分享范围");
-        //TODO
         mModleGroup.setOnCheckedChangeListener(this);
     }
 
@@ -40,7 +39,6 @@ public class ModleActivity extends BackBaseActivity implements RadioGroup.OnChec
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId){
             case R.id.modle_public:
-
                 break;
 
             case R.id.modle_private:

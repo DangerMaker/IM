@@ -32,16 +32,16 @@ public class PhotoActivity extends BackBaseActivity {
     private PhotoPageAdapter adapter;
     private int count;
 
-    public List<Bitmap> bmp = new ArrayList<Bitmap>();
-    public List<String> drr = new ArrayList<String>();
-    public List<String> del = new ArrayList<String>();
+    public List<Bitmap> bmp = new ArrayList<>();
+    public List<String> drr = new ArrayList<>();
+    public List<String> del = new ArrayList<>();
     public int max;
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
-       initView();
+        initView();
     }
 
     private void initView() {
@@ -56,11 +56,11 @@ public class PhotoActivity extends BackBaseActivity {
 
         mPager.setOnPageChangeListener(pageChangeListener);
         for (int i = 0; i < bmp.size(); i++) {
-            initListViews(bmp.get(i));//
+            initListViews(bmp.get(i));
         }
 
-        adapter = new PhotoPageAdapter(listViews);// 构造adapter
-        mPager.setAdapter(adapter);// 设置适配器
+        adapter = new PhotoPageAdapter(listViews);
+        mPager.setAdapter(adapter);
         Intent intent = getIntent();
         int id = intent.getIntExtra("ID", 0);
         mPager.setCurrentItem(id);
@@ -68,13 +68,13 @@ public class PhotoActivity extends BackBaseActivity {
 
     private void initListViews(Bitmap bm) {
         if (listViews == null)
-            listViews = new ArrayList<View>();
-        ImageView img = new ImageView(this);// 构造textView对象
+            listViews = new ArrayList<>();
+        ImageView img = new ImageView(this);
         img.setBackgroundColor(0xff000000);
         img.setImageBitmap(bm);
         img.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
                 LayoutParams.FILL_PARENT));
-        listViews.add(img);// 添加view
+        listViews.add(img);
     }
 
     private OnPageChangeListener pageChangeListener = new OnPageChangeListener() {

@@ -171,10 +171,9 @@ public class PublishedActivity extends BackBaseActivity implements View.OnClickL
                 }
             }
         });
-
-        mComment.setFocusable(true);
-        InputMethodManager imm = (InputMethodManager)getSystemService(Service.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+//        mComment.setFocusable(true);
+//        InputMethodManager imm = (InputMethodManager)getSystemService(Service.INPUT_METHOD_SERVICE);
+//        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 
@@ -201,6 +200,7 @@ public class PublishedActivity extends BackBaseActivity implements View.OnClickL
     private void fromPicture() {
         Intent intent = new Intent(this,
                 ImageGridActivity.class);
+        intent.putExtra("type",1);
         startActivity(intent);
     }
 
@@ -227,7 +227,7 @@ public class PublishedActivity extends BackBaseActivity implements View.OnClickL
         }
 
         public int getCount() {
-            return (Bimp.bmp.size() + 1);
+            return Bimp.bmp == null ? 0 : Bimp.bmp.size() + 1;
         }
 
         public Object getItem(int arg0) {
@@ -283,28 +283,30 @@ public class PublishedActivity extends BackBaseActivity implements View.OnClickL
             new Thread(new Runnable() {
                 public void run() {
                     while (true) {
-                        if (Bimp.max == Bimp.drr.size()) {
-                            Message message = new Message();
-                            message.what = 1;
-                            handler.sendMessage(message);
-                            break;
-                        } else {
-                            String path = Bimp.drr.get(Bimp.max);
-                            System.out.println(path);
-                            //将对应路径的图片压缩
-                            Bitmap bm = Bimp.revitionImageSize(path);
-                            //压缩后添加到集合
-                            Bimp.bmp.add(bm);
-                            //截取图片名称
-                            String newStr = path.substring(
-                                    path.lastIndexOf("/") + 1,
-                                    path.lastIndexOf("."));
-                            //保存图片
-                            FileUtils.saveBitmap(bm, "" + newStr);
-                            Bimp.max += 1;
-                            Message message = new Message();
-                            message.what = 1;
-                            handler.sendMessage(message);
+                        if(Bimp.drr != null){
+                            if (Bimp.max == Bimp.drr.size()) {
+                                Message message = new Message();
+                                message.what = 1;
+                                handler.sendMessage(message);
+                                break;
+                            } else {
+                                String path = Bimp.drr.get(Bimp.max);
+                                System.out.println(path);
+                                //将对应路径的图片压缩
+                                Bitmap bm = Bimp.revitionImageSize(path);
+                                //压缩后添加到集合
+                                Bimp.bmp.add(bm);
+                                //截取图片名称
+                                String newStr = path.substring(
+                                        path.lastIndexOf("/") + 1,
+                                        path.lastIndexOf("."));
+                                //保存图片
+                                FileUtils.saveBitmap(bm, "" + newStr);
+                                Bimp.max += 1;
+                                Message message = new Message();
+                                message.what = 1;
+                                handler.sendMessage(message);
+                            }
                         }
                     }
                 }
@@ -352,7 +354,7 @@ public class PublishedActivity extends BackBaseActivity implements View.OnClickL
     }
 
     public void checkGridView() {
-        if (Bimp.drr.size() == 0) {
+        if (Bimp.drr == null || Bimp.drr.size() == 0) {
             mGridView.setVisibility(View.GONE);
         } else {
             mGridView.setVisibility(View.VISIBLE);
@@ -417,6 +419,7 @@ public class PublishedActivity extends BackBaseActivity implements View.OnClickL
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         ListView listView = new ListView(this);
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dialogString));
+        builder.setTitle("选择部门");
         final AlertDialog dialog = builder.setView(listView).show();
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -543,5 +546,13 @@ public class PublishedActivity extends BackBaseActivity implements View.OnClickL
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Bimp.drr.clear();
+        Bimp.bmp.clear();
+        Bimp.max = 0;
     }
 }

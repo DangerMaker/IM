@@ -419,7 +419,6 @@ public class PublishedActivity extends BackBaseActivity implements View.OnClickL
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         ListView listView = new ListView(this);
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dialogString));
-        builder.setTitle("选择部门");
         final AlertDialog dialog = builder.setView(listView).show();
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override

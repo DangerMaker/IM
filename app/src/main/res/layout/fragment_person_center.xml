@@ -80,6 +80,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             app:isShowImage="true"
+            app:imageSrc = "@drawable/selector_scan"
             app:userText="扫描二维码" />
 
         <com.ez08.im.ui.view.PersonContentItemView

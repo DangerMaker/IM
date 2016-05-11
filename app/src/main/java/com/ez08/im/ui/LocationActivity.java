@@ -94,7 +94,7 @@ public class LocationActivity extends BackBaseActivity implements PoiSearch.OnPo
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
-        setCustomTitle("定位");
+        setCustomTitle("正在定位中.....");
         initLocation();
     }
 
@@ -175,6 +175,7 @@ public class LocationActivity extends BackBaseActivity implements PoiSearch.OnPo
             state = true;
             adapter.updateItems(poiItems);
             list.setAdapter(adapter);
+            setCustomTitle("定位完成");
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

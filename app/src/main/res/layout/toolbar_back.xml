@@ -19,15 +19,30 @@
             android:background="@drawable/btn_back_nor" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/toolbar_title"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:maxLines="1"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        tools:text="here is title" />
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:text="here is title" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/selector_grouping"
+            android:id="@+id/image"
+            android:layout_toRightOf="@+id/toolbar_title"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:visibility="gone"
+            />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/btn_go_next"

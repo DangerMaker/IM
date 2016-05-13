@@ -28,6 +28,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -81,7 +82,8 @@ public class ScrollableLayout extends LinearLayout {
     public interface OnScrollListener{
 
         void onScroll(int currentY, int maxY);
-
+        void isUp();
+        void getTouchY(int touchY);
     }
     private OnScrollListener onScrollListener;
 
@@ -127,7 +129,7 @@ public class ScrollableLayout extends LinearLayout {
         mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
         sysVersion = Build.VERSION.SDK_INT;
     }
-
+private int startY = 0;
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         float currentX = ev.getX();
@@ -150,6 +152,8 @@ public class ScrollableLayout extends LinearLayout {
                 mScrollY = getScrollY();
                 checkIsClickHead((int) currentY, mHeadHeight, getScrollY());
                 checkIsClickHeadExpand((int) currentY, mHeadHeight, getScrollY());
+                startY = (int) ev.getY();
+
 //                Log.d(tag, "isClickHead:" + isClickHead);
 //                Log.d(tag, "checkIsClickHeadExpand:" + isClickHeadExpand);
 //                Log.d(tag, "ACTION_DOWN__mDownY:" + mDownY);
@@ -161,6 +165,11 @@ public class ScrollableLayout extends LinearLayout {
                 if (mDisallowIntercept) {
                     break;
                 }
+                int touchY = Math.abs((int) (ev.getY() - startY));
+                if( i == 0){
+                    onScrollListener.getTouchY((int) (touchY*0.5f));
+                }
+
                 initVelocityTrackerIfNotExists();
                 mVelocityTracker.addMovement(ev);
                 deltaY = mLastY - currentY;
@@ -188,6 +197,8 @@ public class ScrollableLayout extends LinearLayout {
                 mLastY = currentY;
                 break;
             case MotionEvent.ACTION_UP:
+                onScrollListener.isUp();
+
                 if (flag2 && shiftY > shiftX && shiftY > mTouchSlop) {
                     mVelocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
                     float yVelocity = -mVelocityTracker.getYVelocity();
@@ -308,7 +319,7 @@ public class ScrollableLayout extends LinearLayout {
 //        Log.d(tag, "isSticked = " + (mCurY == maxY));
         return mCurY == maxY;
     }
-
+private int i;
     @Override
     public void scrollTo(int x, int y) {
 //        Log.d(tag, "scrollTo " + y);
@@ -320,6 +331,7 @@ public class ScrollableLayout extends LinearLayout {
         mCurY = y;
         if (onScrollListener != null) {
             onScrollListener.onScroll(y, maxY);
+            i = y;
         }
         super.scrollTo(x, y);
     }

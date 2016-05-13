@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -58,7 +59,7 @@ public class ArticleDetailActivity extends BackBaseActivity {
     ViewPagerAdapter adapter;
 
     @Bind(R.id.image)
-    SimpleDraweeView avater;
+    ImageView avater;
     @Bind(R.id.name)
     TextView name;
     @Bind(R.id.group)
@@ -74,7 +75,7 @@ public class ArticleDetailActivity extends BackBaseActivity {
     @Bind(R.id.send_comment)
     LinearLayout linearLayout;
     @Bind(R.id.detail)
-    RelativeLayout detail;
+    LinearLayout detail;
     @Bind(R.id.send_comment1)
     RelativeLayout sendComment;
 
@@ -85,11 +86,11 @@ public class ArticleDetailActivity extends BackBaseActivity {
     ArrayList<BaseFragment> fragmentList = new ArrayList<>();
     private String[] dialogString = {"举报","帮上头条","收藏","分享"};
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_detail1);
-        ButterKnife.bind(this);
         setCustomTitle("微博正文");
         data = getIntent().getParcelableExtra("data");
         List<FriendGroupItemModel.EzContentDataBean.CommentArrayBean> list = data.getEzContentData().getCommentArray();
@@ -103,6 +104,17 @@ public class ArticleDetailActivity extends BackBaseActivity {
             @Override
             public void onScroll(int currentY, int maxY) {
 //                ViewHelper.setTranslationY(imageHeader, (float) (currentY * 0.5));
+
+            }
+
+            @Override
+            public void isUp() {
+
+            }
+
+            @Override
+            public void getTouchY(int touchY) {
+
             }
         });
         mScrollLayout.getHelper().setCurrentScrollableContainer((ScrollableHelper.ScrollableContainer) fragmentList.get(0));

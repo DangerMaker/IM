@@ -1,19 +1,11 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:id="@+id/detail"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
-
-    </LinearLayout>
-
-     <include layout="@layout/toolbar_back" />
-
+    <include layout="@layout/toolbar_back" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -21,14 +13,11 @@
         />
 
     <com.cpoopc.scrollablelayoutlib.ScrollableLayout
-        android:layout_marginTop="5dp"
         android:id="@+id/scrollableLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <include layout="@layout/item_friend_group" />
-
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
@@ -76,4 +65,4 @@
             android:layout_alignParentRight="true"
             />
     </RelativeLayout>
-</RelativeLayout>
+</LinearLayout>

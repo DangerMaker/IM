@@ -6,8 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
+import android.view.View;
+import android.widget.ScrollView;
 
 
+import com.cpoopc.scrollablelayoutlib.ScrollableHelper;
 import com.ez08.im.R;
 import com.ez08.im.model.FriendGroupListModel;
 import com.ez08.im.ui.adapter.FriendGroupAdapter;
@@ -21,8 +24,9 @@ import butterknife.Bind;
  * User: lyjq(1752095474)
  * Date: 2016-04-25
  */
-public class MyCardFragment extends BaseLoadFragment<FriendGroupListModel> {
-
+public class MyCardFragment extends BaseLoadFragment<FriendGroupListModel> implements ScrollableHelper.ScrollableContainer{
+    @Bind(R.id.scrollview)
+    ScrollView scrollView;
     @Bind(R.id.list)
     RecyclerView mRecyclerView;
 
@@ -63,5 +67,10 @@ public class MyCardFragment extends BaseLoadFragment<FriendGroupListModel> {
         if(pageData != null){
             adapter.updateItems(pageData.getList());
         }
+    }
+
+    @Override
+    public View getScrollableView() {
+        return scrollView;
     }
 }

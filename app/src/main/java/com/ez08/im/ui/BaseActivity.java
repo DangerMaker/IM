@@ -43,6 +43,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public void setCustomTitleColor(int color){
+        if(customTitle != null){
+            customTitle.setTextColor(color);
+        }
+    }
+
+    public void setBarBackColor(int color){
+        if(toobar != null){
+            toobar.setBackgroundColor(color);
+        }
+    }
+
     public void onResume() {
         super.onResume();
     }

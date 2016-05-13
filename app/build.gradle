@@ -39,7 +39,9 @@ dependencies {
     //回调
     compile 'io.reactivex:rxjava:1.0.14'
     compile 'io.reactivex:rxandroid:1.0.1'
-    compile project(':scrollablelayoutlib')
     compile files('libs/zixing-core-3.2.0.jar')
+    compile project(':scrollablelayoutlib')
+//    compile 'com.github.cpoopc:scrollablelayoutlib:1.0.0'
     compile files('libs/AMapSearch_3.2.1_AMapLocation_2.4.1_20160425.jar')
+    compile 'com.android.support:support-v4:23.3.0'
 }

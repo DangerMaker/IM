@@ -1,6 +1,9 @@
 package com.ez08.im.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,12 +12,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 
+import com.cpoopc.scrollablelayoutlib.ScrollableHelper;
+import com.cpoopc.scrollablelayoutlib.ScrollableLayout;
 import com.ez08.im.R;
+import com.ez08.im.ui.fragment.BaseFragment;
 import com.ez08.im.ui.fragment.MyCardFragment;
 import com.ez08.im.ui.fragment.MyDetailFragment;
+import com.ez08.im.ui.view.ParallaxScrollView;
+import com.ez08.im.util.SystemUtils;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 
@@ -23,29 +36,105 @@ import butterknife.Bind;
  * Date: 2016-04-27
  */
 public class MyMainActivity extends BackBaseActivity {
-    @Bind(R.id.toolbar_layout)
-    CollapsingToolbarLayout toolbarLayout;
-    @Bind(R.id.app_bar)
-    AppBarLayout appBarLayout;
-    @Bind(R.id.image)
-    ImageView draweeView;
     @Bind(R.id.tab_layout)
     TabLayout tabLayout;
     @Bind(R.id.main_viewpager)
     ViewPager viewPager;
     ViewPagerAdapter adapter;
+    @Bind(R.id.parallaxscrollview)
+    ParallaxScrollView parallaxScrollView;
+    @Bind(R.id.scrollableLayout)
+    ScrollableLayout mScrollLayout;
+
+
+
+    ArrayList<BaseFragment> fragmentList = new ArrayList<>();
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            SystemUtils.show_msg(MyMainActivity.this,"刷新");
+            parallaxScrollView.startRefresh();
+            bar.setVisibility(View.INVISIBLE);
+        }
+    };
+    private ProgressBar bar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mymain);
-        setCustomTitle("");
+        setCustomTitle("个人中心");
+        setBarBackColor(Color.TRANSPARENT);
+
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(viewPager);
 
+        fragmentList.add(new MyDetailFragment());
+        fragmentList.add(new MyCardFragment());
+
+
+        View view = getLayoutInflater().inflate(R.layout.my_head,null);
+        ImageView imageView = (ImageView) view.findViewById(R.id.backimage);
+        bar = (ProgressBar) view.findViewById(R.id.loding_bar);
+        bar.setVisibility(View.INVISIBLE);
+        parallaxScrollView.addView(view);
+        parallaxScrollView.setParallaxImage(imageView);
+        mScrollLayout.setOnScrollListener(new ScrollableLayout.OnScrollListener() {
+            @Override
+            public void onScroll(int currentY, int maxY) {
+//                ViewHelper.setTranslationY(parallaxScrollView, (float) (currentY * 0.5));
+                Log.e("TAG","currentY: " +currentY +", maxY: "+maxY);
+                if(currentY >= 800){
+                    setBarBackColor(Color.WHITE);
+                    setCustomTitleColor(Color.BLACK);
+                }else {
+                    setBarBackColor(Color.TRANSPARENT);
+                    setCustomTitleColor(Color.TRANSPARENT);
+                }
+            }
+
+            @Override
+            public void isUp() {
+                parallaxScrollView.reboundImage();
+            }
+
+            @Override
+            public void getTouchY(int touchY) {
+                parallaxScrollView.setImageHeight(touchY / 30);
+            }
+        });
+        parallaxScrollView.startRefresh();
+        parallaxScrollView.setRefreshListener(new ParallaxScrollView.OnRefreshListener() {
+            @Override
+            public void onRefreshing() {
+                handler.sendEmptyMessageDelayed(0,2000);
+                bar.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        mScrollLayout.getHelper().setCurrentScrollableContainer((ScrollableHelper.ScrollableContainer) fragmentList.get(0));
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mScrollLayout.getHelper().setCurrentScrollableContainer((ScrollableHelper.ScrollableContainer) fragmentList.get(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -58,13 +147,7 @@ public class MyMainActivity extends BackBaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
-                case 0:
-                    return new MyDetailFragment();
-                default:
-                    return new MyCardFragment();
-            }
-
+            return fragmentList.get(position);
         }
 
         @Override

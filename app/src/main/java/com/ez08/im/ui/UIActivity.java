@@ -108,7 +108,7 @@ public class UIActivity extends BaseActivity {
         PopupWindow pw = new PopupWindow(listView, SystemUtils.convertDpToPixel(this,150),SystemUtils.convertDpToPixel(this,350),true);
         pw.setOutsideTouchable(true);
         pw.setBackgroundDrawable(new ColorDrawable());
-        pw.showAsDropDown(title);
+        pw.showAsDropDown(title,-SystemUtils.convertDpToPixel(this,60),0);
         pw.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/com.example.administrator.myapplication"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:id="@+id/persion_layout"
     android:layout_width="match_parent"
@@ -63,7 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
-            app:isShowImage="false"
+            app:isShowImage="true"
+            app:imageSrc = "@drawable/ic_mail_outline_black_36dp"
             app:userText="修改邮箱" />
 
         <com.ez08.im.ui.view.PersonContentItemView
@@ -71,7 +72,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
-            app:isShowImage="false"
+            app:isShowImage="true"
+            app:imageSrc = "@drawable/ic_vpn_key_black_36dp"
             app:userText="修改密码" />
 
         <com.ez08.im.ui.view.PersonContentItemView
@@ -80,7 +82,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             app:isShowImage="true"
-            app:imageSrc = "@drawable/selector_scan"
+            app:imageSrc = "@drawable/ic_flip_black_36dp"
             app:userText="扫描二维码" />
 
         <com.ez08.im.ui.view.PersonContentItemView
@@ -88,7 +90,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
-            app:isShowImage="false"
+            app:isShowImage="true"
+            app:imageSrc = "@drawable/ic_texture_black_36dp"
             app:userText="生成二维码" />
 
         <com.ez08.im.ui.view.PersonContentItemView
@@ -97,7 +100,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:background="@android:color/white"
-            app:isShowImage="false"
+            app:isShowImage="true"
+            app:imageSrc = "@drawable/ic_exit_to_app_black_36dp"
             app:userText="退出账户" />
     </LinearLayout>
 </ScrollView>

@@ -8,7 +8,6 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-
 import com.ez08.im.Config;
 import com.ez08.im.R;
 import com.ez08.im.auth.UserService;

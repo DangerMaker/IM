@@ -5,18 +5,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-
+import android.widget.RelativeLayout;
 
 import com.cpoopc.scrollablelayoutlib.ScrollableHelper;
 import com.cpoopc.scrollablelayoutlib.ScrollableLayout;
@@ -30,6 +29,7 @@ import com.ez08.im.util.SystemUtils;
 import java.util.ArrayList;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * User: lyjq(1752095474)
@@ -47,24 +47,34 @@ public class MyMainActivity extends BackBaseActivity {
     ScrollableLayout mScrollLayout;
 
 
-
     ArrayList<BaseFragment> fragmentList = new ArrayList<>();
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            SystemUtils.show_msg(MyMainActivity.this,"刷新");
+            SystemUtils.show_msg(MyMainActivity.this, "刷新");
             parallaxScrollView.startRefresh();
-            bar.setVisibility(View.INVISIBLE);
+            bar.setVisibility(View.GONE);
+            imgMore.setVisibility(View.VISIBLE);
         }
     };
+    @Bind(R.id.btn_go_back)
+    RelativeLayout btnGoBack;
+    @Bind(R.id.image)
+    ImageView image;
+    @Bind(R.id.btn_go_next)
+    RelativeLayout btnGoNext;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     private ProgressBar bar;
+    private ImageView imgMore;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mymain);
+        ButterKnife.bind(this);
         setCustomTitle("个人中心");
         setBarBackColor(Color.TRANSPARENT);
 
@@ -78,23 +88,36 @@ public class MyMainActivity extends BackBaseActivity {
         fragmentList.add(new MyCardFragment());
 
 
-        View view = getLayoutInflater().inflate(R.layout.my_head,null);
+        View view = getLayoutInflater().inflate(R.layout.my_head, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.backimage);
         bar = (ProgressBar) view.findViewById(R.id.loding_bar);
-        bar.setVisibility(View.INVISIBLE);
+        imgMore = (ImageView) view.findViewById(R.id.more);
+
+
         parallaxScrollView.addView(view);
         parallaxScrollView.setParallaxImage(imageView);
+
         mScrollLayout.setOnScrollListener(new ScrollableLayout.OnScrollListener() {
             @Override
             public void onScroll(int currentY, int maxY) {
 //                ViewHelper.setTranslationY(parallaxScrollView, (float) (currentY * 0.5));
-                Log.e("TAG","currentY: " +currentY +", maxY: "+maxY);
-                if(currentY >= 800){
+                //根据滑动状态修复tabLayout的位置
+                if (currentY >= maxY - toobar.getHeight()) {
                     setBarBackColor(Color.WHITE);
                     setCustomTitleColor(Color.BLACK);
-                }else {
+                } else {
                     setBarBackColor(Color.TRANSPARENT);
                     setCustomTitleColor(Color.TRANSPARENT);
+                }
+
+                if (currentY >=  maxY - toobar.getHeight()) {
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabLayout.getLayoutParams();
+                    params.topMargin = currentY -  (maxY - toobar.getHeight());
+                    tabLayout.setLayoutParams(params);
+                }else{
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabLayout.getLayoutParams();
+                    params.topMargin = 0;
+                    tabLayout.setLayoutParams(params);
                 }
             }
 
@@ -112,8 +135,9 @@ public class MyMainActivity extends BackBaseActivity {
         parallaxScrollView.setRefreshListener(new ParallaxScrollView.OnRefreshListener() {
             @Override
             public void onRefreshing() {
-                handler.sendEmptyMessageDelayed(0,2000);
+                handler.sendEmptyMessageDelayed(0, 2000);
                 bar.setVisibility(View.VISIBLE);
+                imgMore.setVisibility(View.GONE);
             }
         });
 
@@ -139,7 +163,7 @@ public class MyMainActivity extends BackBaseActivity {
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        private String[] title = {"主页","帖子"};
+        private String[] title = {"主页", "帖子"};
 
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);

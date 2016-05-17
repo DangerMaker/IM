@@ -15,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 
 import com.ez08.im.R;
-import com.ez08.im.util.SystemUtils;
 import com.ez08.im.zxing.camera.CameraManager;
 import com.ez08.im.zxing.view.ViewfinderView;
 import com.google.zxing.BarcodeFormat;
@@ -184,7 +183,6 @@ public final class CaptureActivity extends Activity implements
 		if (fromLiveScan) {
 			beepManager.playBeepSoundAndVibrate();
 
-			SystemUtils.show_msg(this,"扫描成功" + rawResult.getText());
 			Intent intent = getIntent();
 			intent.putExtra("codedContent", rawResult.getText());
 			intent.putExtra("codedBitmap", barcode);

@@ -4,6 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/toolbar_back"/>
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<EditText-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:hint="搜索附近位置"-->
+            <!---->
+            <!--/>-->
+    <!--</RelativeLayout>-->
     <ListView
         android:layout_width="match_parent"
         android:id="@+id/list"

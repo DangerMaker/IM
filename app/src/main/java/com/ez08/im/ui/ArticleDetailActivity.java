@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -42,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -232,7 +230,7 @@ public class ArticleDetailActivity extends BackBaseActivity {
         popupInputMethodWindow();
     }
 
-    //当popup显示的时候,自动弹出软键盘
+    //自动弹出软键盘
     private void popupInputMethodWindow() {
         new Thread(new Runnable() {
             @Override

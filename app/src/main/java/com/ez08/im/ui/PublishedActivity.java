@@ -2,7 +2,6 @@ package com.ez08.im.ui;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -37,7 +36,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import com.ez08.im.Config;
 import com.ez08.im.R;
@@ -418,6 +416,7 @@ public class PublishedActivity extends BackBaseActivity implements View.OnClickL
     public void addBranch() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         ListView listView = new ListView(this);
+        listView.setBackgroundResource(R.drawable.toast_background_white);
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dialogString));
         final AlertDialog dialog = builder.setView(listView).show();
         listView.setOnItemClickListener(new OnItemClickListener() {

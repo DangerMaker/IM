@@ -207,10 +207,15 @@ public class PersonCenterFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 11){
-            if(resultCode == getActivity().RESULT_OK){
-
-            }
+       switch (requestCode){
+           case REQUEST_CODE_SCAN:
+               if(resultCode == getActivity().RESULT_OK){
+                     //扫描结果
+                    String codedContent = data.getStringExtra("codedContent");
+                    Bitmap codedBitmap = data.getParcelableExtra("codedBitmap");
+                   SystemUtils.show_msg(getActivity(),"扫描成功" + codedContent);
+               }
+               break;
         }
     }
 

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTabHost;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ArrayAdapter;
@@ -81,10 +80,12 @@ public class UIActivity extends BaseActivity {
                     title.setText(tab1);
                 } else if (tabId.equals("live")) {
                     goNext.setVisibility(View.GONE);
+                    image.clearAnimation();
                     image.setVisibility(View.GONE);
                     title.setText(tab2);
                 } else if (tabId.equals("my")) {
                     goNext.setVisibility(View.GONE);
+                    image.clearAnimation();
                     image.setVisibility(View.GONE);
                     title.setText(tab3);
                 }

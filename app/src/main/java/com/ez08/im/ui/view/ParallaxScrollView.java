@@ -3,7 +3,6 @@ package com.ez08.im.ui.view;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -14,6 +13,8 @@ import com.ez08.im.util.SystemUtils;
  * Created by shand on 2016/5/12.
  */
 public class ParallaxScrollView extends ScrollView {
+
+    private int newHeight;
 
     public ParallaxScrollView(Context context) {
         super(context);
@@ -93,12 +94,8 @@ public class ParallaxScrollView extends ScrollView {
 
     public void setImageHeight(int height){
         //2.判断并限制IMageView的高度
-        int newHeight = parallaxImageView.getHeight() + height;
+        newHeight = parallaxImageView.getHeight() + height;
         if(newHeight > maxHeight) newHeight = maxHeight;
-        if(isRefreshing){
-                listener.onRefreshing();
-                isRefreshing = false;
-            }
         if(newHeight < originalHeight) newHeight = originalHeight;
         //3.将newHeight设置给ImageVIew
         android.view.ViewGroup.LayoutParams params = parallaxImageView.getLayoutParams();
@@ -108,8 +105,12 @@ public class ParallaxScrollView extends ScrollView {
     }
 
     public void reboundImage(){
-        //让ImageView的高回弹的最初的120dp
+        if(newHeight - originalHeight > 60 && isRefreshing){
+            listener.onRefreshing();
+            isRefreshing = false;
+        }
 
+        //让ImageView的高回弹的最初的120dp
         ValueAnimator animator = ValueAnimator.ofInt(parallaxImageView.getHeight(),originalHeight);
         //监听动画执行的过程
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

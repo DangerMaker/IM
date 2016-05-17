@@ -5,8 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ScrollView;
-
 
 import com.cpoopc.scrollablelayoutlib.ScrollableHelper;
 import com.ez08.im.Config;
@@ -25,8 +23,6 @@ import butterknife.Bind;
  * Date: 2016-04-25
  */
 public class MyDetailFragment extends BaseLoadFragment<FriendGroupListModel> implements ScrollableHelper.ScrollableContainer{
-    @Bind(R.id.scrollview)
-    ScrollView scrollView;
     @Bind(R.id.list)
     RecyclerView mRecyclerView;
 
@@ -73,6 +69,6 @@ public class MyDetailFragment extends BaseLoadFragment<FriendGroupListModel> imp
 
     @Override
     public View getScrollableView() {
-        return scrollView;
+        return mRecyclerView;
     }
 }

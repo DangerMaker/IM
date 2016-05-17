@@ -89,6 +89,16 @@
         android:id="@+id/loding_bar"
         android:layout_height="26dp"
         android:indeterminateDrawable="@anim/progress_anim"
+        android:visibility="gone"
+        />
+    <ImageView
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/more"
+        android:src="@drawable/selector_mymain_more"
         />
 
 </RelativeLayout>

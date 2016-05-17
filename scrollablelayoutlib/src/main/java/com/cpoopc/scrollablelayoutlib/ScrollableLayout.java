@@ -28,7 +28,6 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -129,7 +128,7 @@ public class ScrollableLayout extends LinearLayout {
         mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
         sysVersion = Build.VERSION.SDK_INT;
     }
-private int startY = 0;
+    private int startY = 0;
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         float currentX = ev.getX();
@@ -166,10 +165,7 @@ private int startY = 0;
                     break;
                 }
                 int touchY = Math.abs((int) (ev.getY() - startY));
-                if( i == 0){
-                    onScrollListener.getTouchY((int) (touchY*0.5f));
-                }
-
+                if( i == 0) onScrollListener.getTouchY((int) (touchY*0.5f));
                 initVelocityTrackerIfNotExists();
                 mVelocityTracker.addMovement(ev);
                 deltaY = mLastY - currentY;

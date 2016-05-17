@@ -243,6 +243,7 @@ public class FriendGroupItemView extends RelativeLayout implements View.OnClickL
     public void more(){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         ListView listView = new ListView(context);
+        listView.setBackgroundResource(R.drawable.toast_background_white);
         listView.setBackgroundColor(Color.WHITE);
         listView.setAdapter(new ArrayAdapter<>(context,android.R.layout.simple_list_item_1,dialogString));
         final AlertDialog dialog = builder.setView(listView).show();

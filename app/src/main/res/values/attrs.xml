@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="PersonContent">
-    <attr name="isShowImage" format="boolean"/>
-    <attr name="userText" format="string"/>
+        <attr name="isShowImage" format="boolean"/>
+        <attr name="userText" format="string"/>
+        <attr name="imageSrc" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="RefreshView">
-        <attr name="type" format="enum">
-            <enum name="sun" value="0" />
-        </attr>
-    </declare-styleable>
 </resources>
